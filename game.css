@@ -36,7 +36,7 @@ aside ul {list-style-type: none; margin-left: 0; padding-left: 0; margin-bottom:
 #opponent .body {background-image: url(images/body1.png);}
 #opponent .head {background-image: url(images/head1.png);}
 
-#alien {background-image: url(images/alien.png); position: absolute; height: 93.8px; width: 86px; background-size: contain; top: 15vh; left: 45%;}
+.alien {background-image: url(images/alien.png); position: absolute; height: 93.8px; width: 86px; background-size: contain; top: 15vh; left: 45%;}
 
 .enemy {position: absolute;}
 .enemy .head {
