@@ -1,45 +1,37 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Assignment 2</title>
-		<link rel="stylesheet" href="game.css" />
-		<script src="game.js"></script>
-	</head>
+<head>
+    <title>Assignment 2</title>
+    <link href="game.css" rel="stylesheet"/>
+    <script src="game.js"></script>
+</head>
 
-	<body>
+<body>
+<div class="hud">
+    <ul class="health">
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
 
-		<div class="hud">
-			<ul class="health">
-				<li></li>
-				<li></li>
-				<li></li>
-			</ul>
-		</div>
+<div id="username"></div>
 
-		<div class="start">
-			Start
-		</div>
+<div class="start">Start</div>
 
-		<div class="sky">
+<div class="sky"></div>
+<div class="greenGrass"></div>
 
-		</div>
+<div class="character stand down" id="player">
+    <div class="head"></div>
 
+    <div class="body"></div>
 
-		<div id="player" class="character stand down">
-			<div class="head">
-			</div>
+    <div class="weapon bow"></div>
+</div>
 
-			<div class="body">
-			</div>
-
-			<div class="weapon bow">
-			</div>
-		</div>
-
-		</div>
-
-		<div class="alien" id="alien">
+<div class="alien" id="alien"></div>
 
 
-	</body>
+</body>
 </html>
