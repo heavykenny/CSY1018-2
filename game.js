@@ -101,12 +101,109 @@ function keydown(event) {
     }
 }
 
+//Starts the game
+function start() {
+    isGamePlaying = true;
+    document.getElementById("alien").remove();
+    getUserName();
 
-function myLoadFunction() {
-	timeout = setInterval(move, 10);
-	document.addEventListener('keydown', keydown);
-	document.addEventListener('keyup', keyup);
+    if (isGamePlaying) {
+        startGame.style.display = 'none';
+        startAttacking();
+        setInterval(startAttacking, 5000);
+    }
 }
 
+//Enemy starts attacking
+function startAttacking(difficulty = 1) {
+    let attackRate = Math.ceil(Math.random() * 500);
+
+    for (let i = 0; i < difficulty * 3; i++) {
+        setTimeout(enemyFireBombs, attackRate);
+        clearEnemy();
+    }
+}
+
+//Enemy fires bomb at interval
+function enemyFireBombs() {
+    let bomb = createEnemyAndBomb();
+
+    let rate = [20, 40, 60, 80, 100, 150, 200, 300];
+
+    setInterval(function () {
+            if (isGamePlaying === true) {
+                let positionTop = bomb.offsetTop;
+                bomb.style.top = positionTop + 10 + 'px';
+
+                let randomBoolean = Math.random() < 0.1;
+                if (randomBoolean) {
+                    let positionLeft = bomb.offsetLeft;
+                    bomb.style.left = positionLeft + 8 + 'px';
+                }
+
+                let newTop = positionTop + 10;
+                let element = document.elementFromPoint(bomb.offsetLeft, newTop);
+                if (element.classList.contains('greenGrass') === true) {
+                    bomb.style.top = positionTop + 10 + 'px';
+                    bomb.classList = 'explosion';
+                }
+            }
+        }, rate[randomInteger(0, 7)]
+    )
+
+}
+
+// Creates the enemy position and bomb
+function createEnemyAndBomb() {
+    let bomb = document.createElement('div');
+    body.appendChild(bomb);
+    bomb.classList.add('bomb');
+
+    let position = Math.ceil(Math.random() * window.innerWidth);
+    bomb.style.left = position + 28 + "px";
+
+    let enemy = document.createElement('div');
+    body.appendChild(enemy);
+    enemy.classList.add('alien');
+    enemy.style.top = "0vh";
+    enemy.style.left = position + "px";
+
+    return bomb;
+}
+
+// clears enemies created earlier.
+function clearEnemy() {
+    let enemies = document.getElementsByClassName('alien');
+    for (let i = 0; i < enemies.length; i++) {
+        enemies[i].remove();
+    }
+}
+
+// https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
+function randomInteger(min, max) {
+    return (Math.floor(Math.random() * (max - min)) + min);
+}
+
+// gets and stores username
+function getUserName() {
+    const user = localStorage.getItem("username");
+    if (user === null) {
+        let user = prompt("Enter your nickname", "User 1");
+        localStorage.setItem('username', user);
+    }
+
+    return localStorage.getItem('username');
+}
+
+function myLoadFunction() {
+    timeout = setInterval(move, 10);
+    document.addEventListener('keydown', keydown);
+    document.addEventListener('keyup', keyup);
+
+    startGame = document.getElementsByClassName('start')[0];
+    startGame.addEventListener('click', start);
+
+    body = document.getElementsByTagName('body')[0];
+}
 
 document.addEventListener('DOMContentLoaded', myLoadFunction);
