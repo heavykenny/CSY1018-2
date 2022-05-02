@@ -13099,13 +13099,28 @@ ul {list-style-type: none;float: right; margin-right: 20px;}
 	height: 512px;
 }
 
-.username{
-	background-color: white;
+.user {
+    position: absolute;
+    padding: 10px;
 }
 
-.greenGrass {
-	top: 70vh;
-	width: 100%;
-	height: 10px;
-	position: absolute;
+.game-over{
+    color: white;
+    text-shadow: 2px 2px 2px #000;
+    position: absolute;
+    font-size: 2em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20vw;
+    background-color: red;
+    z-index: 1000;
+    text-align: center;
+    left: 50%;
+    margin-left: -10vw;
+    top: 50%;
+    margin-top: -3em;
+    font-family: 'Anton';
+    cursor: pointer;
+    border-radius: 20px;
+    box-shadow: 4px 4px 4px #000;
 }
