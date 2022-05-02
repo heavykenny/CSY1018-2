@@ -7,6 +7,8 @@ let lastPressed = false;
 let startGame;
 let body;
 let isGamePlaying = false;
+let isPlayerDead = false;
+let totalBombs = 0;
 
 function keyup(event) {
     let player = document.getElementById('player');
@@ -83,7 +85,6 @@ function move() {
 
         player.className = 'character walk right';
     }
-
 }
 
 function keydown(event) {
@@ -105,13 +106,18 @@ function keydown(event) {
 function start() {
     isGamePlaying = true;
     document.getElementById("alien").remove();
-    getUserName();
+    document.getElementsByTagName('span')[0].innerHTML = getUserName();
+    document.getElementsByClassName('username')[0].style.display = '';
 
     if (isGamePlaying) {
         startGame.style.display = 'none';
         startAttacking();
         setInterval(startAttacking, 5000);
     }
+}
+
+function getBombEscaped() {
+    return totalBombs;
 }
 
 //Enemy starts attacking
@@ -126,31 +132,58 @@ function startAttacking(difficulty = 1) {
 
 //Enemy fires bomb at interval
 function enemyFireBombs() {
-    let bomb = createEnemyAndBomb();
+    if (isGamePlaying === true) {
+        let bomb = createEnemyAndBomb();
+        let randomExplosion = Math.ceil((randomInteger(535, 770) + 1) / 10) * 10;
+        let rate = [20, 40, 60, 80, 100, 150, 200, 300];
 
-    let rate = [20, 40, 60, 80, 100, 150, 200, 300];
+        setInterval(function () {
+            document.getElementsByTagName('span')[1].innerHTML = getBombEscaped().toString();
+            let positionTop = bomb.offsetTop;
+            bomb.style.top = positionTop + 10 + 'px';
 
-    setInterval(function () {
-            if (isGamePlaying === true) {
-                let positionTop = bomb.offsetTop;
-                bomb.style.top = positionTop + 10 + 'px';
+            // let randomBoolean = Math.random() < 0.1;
+            //
+            // if (randomBoolean) {
+            //     let positionLeft = bomb.offsetLeft;
+            //     bomb.style.left = positionLeft + 8 + 'px';
+            // }
 
-                let randomBoolean = Math.random() < 0.1;
-                if (randomBoolean) {
-                    let positionLeft = bomb.offsetLeft;
-                    bomb.style.left = positionLeft + 8 + 'px';
-                }
+            let newTop = positionTop + 10;
+            let element = document.elementFromPoint(bomb.offsetLeft, newTop);
 
-                let newTop = positionTop + 10;
-                let element = document.elementFromPoint(bomb.offsetLeft, newTop);
-                if (element.classList.contains('greenGrass') === true) {
-                    bomb.style.top = positionTop + 10 + 'px';
+            if (element !== null) {
+
+                if (element.classList.contains('user')) {
+                    bomb.style.top = positionTop + 0 + 'px';
                     bomb.classList = 'explosion';
+                    removeLives()
                 }
-            }
-        }, rate[randomInteger(0, 7)]
-    )
 
+                if (positionTop === randomExplosion) {
+                    bomb.classList = 'explosion';
+                    bomb.style.top = positionTop + 0 + 'px';
+                }
+
+                if (element.classList.contains('explosion')) {
+                    setTimeout(function () {
+                        removeBombs()
+                    }, 100);
+                }
+
+            }
+        }, rate[randomInteger(0, 7)])
+    }
+}
+
+function removeBombs() {
+    const explosion = document.getElementsByClassName('explosion');
+    while (explosion.length > 0) explosion[0].remove();
+
+    if (isPlayerDead) {
+        const bombs = document.getElementsByClassName('bomb');
+        while (bombs.length > 0) bombs[0].remove();
+    }
 }
 
 // Creates the enemy position and bomb
@@ -168,7 +201,27 @@ function createEnemyAndBomb() {
     enemy.style.top = "0vh";
     enemy.style.left = position + "px";
 
+    totalBombs++;
+
     return bomb;
+}
+
+function removeLives() {
+    let lives = document.getElementsByClassName('health')[0].getElementsByTagName('li');
+    if (lives.length > 1) {
+        totalBombs--;
+        lives[0].remove()
+    } else {
+        document.getElementById('player').className = 'character dead';
+        isGamePlaying = false;
+        lives[0].remove();
+
+        isPlayerDead = true;
+        document.getElementsByClassName('game-over')[0].style.display = '';
+        document.getElementsByClassName('play-again')[0].style.display = '';
+
+        removeBombs();
+    }
 }
 
 // clears enemies created earlier.
@@ -204,6 +257,9 @@ function myLoadFunction() {
     startGame.addEventListener('click', start);
 
     body = document.getElementsByTagName('body')[0];
+    document.getElementsByClassName('username')[0].style.display = 'none';
+    document.getElementsByClassName('game-over')[0].style.display = 'none';
+    document.getElementsByClassName('play-again')[0].style.display = 'none';
 }
 
 document.addEventListener('DOMContentLoaded', myLoadFunction);
