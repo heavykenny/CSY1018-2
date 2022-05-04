@@ -5,10 +5,13 @@ let rightPressed = false;
 let lastPressed = false;
 
 let startGame;
+let startGameAgain;
 let body;
 let isGamePlaying = false;
 let isPlayerDead = false;
 let totalBombs = 0;
+let multiplier = 2;
+let level = 1;
 
 function keyup(event) {
     let player = document.getElementById('player');
@@ -39,7 +42,7 @@ function move() {
     if (downPressed) {
         let newTop = positionTop + 1;
 
-        let element = document.elementFromPoint(player.offsetLeft, newTop + 32);
+        let element = document.elementFromPoint(player.offsetLeft, newTop + 50);
         if (element.classList.contains('sky') === false) {
             player.style.top = newTop + 'px';
         }
@@ -104,8 +107,14 @@ function keydown(event) {
 
 //Starts the game
 function start() {
+    totalBombs = 0;
+    isPlayerDead = false;
     isGamePlaying = true;
-    document.getElementById("alien").remove();
+    document.getElementsByClassName('game-over')[0].style.display = 'none';
+    document.getElementsByClassName('play-again')[0].style.display = 'none';
+
+    let alien = document.getElementById("alien");
+    if(alien) alien.remove();
     document.getElementsByTagName('span')[0].innerHTML = getUserName();
     document.getElementsByClassName('username')[0].style.display = '';
 
@@ -121,10 +130,29 @@ function getBombEscaped() {
 }
 
 //Enemy starts attacking
-function startAttacking(difficulty = 1) {
+function startAttacking() {
     let attackRate = Math.ceil(Math.random() * 500);
 
-    for (let i = 0; i < difficulty * 3; i++) {
+    const difficulties = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+    if (totalBombs > multiplier) {
+        if (isGamePlaying) {
+            multiplier += 3;
+            level++;
+        }
+    }
+
+    let difficulty = difficulties[level-1];
+
+
+        if (level >= 10){
+            difficulty = 10;
+            level = 10;
+        }
+
+    document.getElementsByTagName('span')[2].innerHTML = level;
+
+    for (let i = 0; i < difficulty; i++) {
         setTimeout(enemyFireBombs, attackRate);
         clearEnemy();
     }
@@ -210,6 +238,7 @@ function removeLives() {
     let lives = document.getElementsByClassName('health')[0].getElementsByTagName('li');
     if (lives.length > 1) {
         totalBombs--;
+        document.getElementById('player').className = 'character hit left';
         lives[0].remove()
     } else {
         document.getElementById('player').className = 'character dead';
@@ -220,7 +249,17 @@ function removeLives() {
         document.getElementsByClassName('game-over')[0].style.display = '';
         document.getElementsByClassName('play-again')[0].style.display = '';
 
+        multiplier = 20;
+        level = 1;
         removeBombs();
+    }
+}
+
+function addLives() {
+    let lives = document.getElementsByClassName('health')[0];
+    for (let i = 0; i < 3; i++) {
+        let live = document.createElement('li');
+        lives.appendChild(live);
     }
 }
 
@@ -255,6 +294,10 @@ function myLoadFunction() {
 
     startGame = document.getElementsByClassName('start')[0];
     startGame.addEventListener('click', start);
+
+    startGameAgain = document.getElementsByClassName('play-again')[0];
+    startGameAgain.addEventListener('click', start);
+    startGameAgain.addEventListener('click', addLives);
 
     body = document.getElementsByTagName('body')[0];
     document.getElementsByClassName('username')[0].style.display = 'none';
