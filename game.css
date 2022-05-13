@@ -157,6 +157,19 @@ aside ul {
     left: 45%;
 }
 
+/*https://stackoverflow.com/questions/34159490/slide-in-from-left-css-animation*/
+@keyframes slideIn {
+    0% {
+        transform: translateY(-100%);
+    }
+    50% {
+        transform: translateY(-50%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
 .enemy {
     position: absolute;
 }
@@ -660,7 +673,7 @@ aside ul {
     margin-left: 0.4em;
 }
 
-.start, .play-again {
+.start, .play-again, .game-over, .end-game, .high-score {
 
     color: white;
     text-shadow: 2px 2px 2px #000;
@@ -17526,10 +17539,12 @@ ul {
     height: 512px;
 }
 
+/*making the user board to appear*/
 .username {
     position: absolute;
 }
 
+/*adding style to make make the board appear*/
 .username p {
     background-color: white;
     font-size: 15px;
@@ -17537,28 +17552,39 @@ ul {
     display: block;
 }
 
+/*making the character have a wider reach for the bomb*/
 .user {
-    position: absolute;
+    position: relative;
     padding: 10px;
 }
 
+/*a custom game over button*/
 .game-over{
-    color: white;
-    text-shadow: 2px 2px 2px #000;
-    position: absolute;
-    font-size: 2em;
-    margin-left: auto;
-    margin-right: auto;
-    width: 20vw;
+    width: 35vw;
     background-color: red;
-    z-index: 1000;
-    text-align: center;
-    left: 50%;
-    margin-left: -10vw;
-    top: 50%;
-    margin-top: -3em;
-    font-family: 'Anton';
-    cursor: pointer;
-    border-radius: 20px;
-    box-shadow: 4px 4px 4px #000;
+    top: 42%;
+    left: 42%;
+}
+
+/*a custom end game button*/
+.end-game{
+    width: 20vw;
+    background-color: #2a0b0b;
+    top: 65%;
+}
+
+/*a custom high score button*/
+.high-score{
+    width: 20vw;
+    top: 40%;
+    height: 15vw;
+    background-color: #f1494b;
+}
+
+/*a custom high score design for the text */
+.high-score p {
+    font-size: 20px;
+    margin: 0 0 0 20px;
+    text-align: left;
+    color: #7fc503;
 }

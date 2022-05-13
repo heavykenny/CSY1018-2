@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Assignment 2</title>
+    <title>Kehinde O - Web Development (CSY 1018)</title>
     <link href="game.css" rel="stylesheet"/>
     <script src="game.js"></script>
 </head>
@@ -16,8 +16,15 @@
 </div>
 
 <div class="start">Start</div>
-<div class="game-over">Game Over</div>
-<div class="play-again">Play Again?</div>
+<div class="game-over hide-text">Game Over</div>
+<div class="play-again hide-text">Play Again?</div>
+<div class="end-game hide-text">End Game</div>
+<div class="high-score hide-text">
+    High Score
+    <p class="details">Username: </p>
+    <p class="details">Highest Level: </p>
+    <p class="details">Bomb Escaped: </p>
+</div>
 
 <div class="sky"></div>
 
@@ -27,13 +34,10 @@
 
         <div class="body"></div>
     </div>
-
-    <div class="weapon bow"></div>
 </div>
 
 <div class="alien" id="alien"></div>
-<div class="username">
-    <p>Username: <span></span></p>
+<div class="username hide-text">
     <p>Bomb Count: <span></span></p>
     <p>Level: <span></span></p>
 </div>
