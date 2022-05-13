@@ -393,7 +393,7 @@ function createEnemyAndBomb() {
 
     // adding the position to the bomb,
     // then 28px to make it appear like its from the alien
-    bomb.style.left = 200 + 28 + 'px';
+    bomb.style.left = position + 28 + 'px';
 
     // creates a div, add class of alien
     let alien = document.createElement('div');
