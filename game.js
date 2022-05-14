@@ -154,6 +154,14 @@ function changeDifficultyLevel() {
     return level;
 }
 
+/**
+ * this function updates the local storage
+ */
+function updateLocalStorage() {
+    console.log("update")
+    localStorage.setItem('high-score', getBombEscaped());
+    localStorage.setItem('highest-level', level);
+}
 //Enemy starts attacking
 function startAttacking() {
     let attackRate = Math.ceil(Math.random() * 500);
@@ -325,6 +333,8 @@ function removeBombs() {
  * This function removes the live when the user character gets hit by arrow.
  */
 function removeLives() {
+    // update the level and bomb
+    updateLocalStorage();
     // gets the current live of the user
     let lives = document.getElementsByClassName('health')[0].getElementsByTagName('li');
     if (lives.length > 1) {
@@ -453,8 +463,6 @@ function getUserDetails() {
 
     // Safes the username, high-score and level to local storage
     localStorage.setItem('username', user);
-    localStorage.setItem('high-score', getBombEscaped());
-    localStorage.setItem('highest-level', level);
 
     return {
         'name': localStorage.getItem('username'),
