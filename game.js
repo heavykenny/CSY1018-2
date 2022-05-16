@@ -158,14 +158,14 @@ function changeDifficultyLevel() {
  * this function updates the local storage
  */
 function updateLocalStorage() {
-    console.log("update")
     localStorage.setItem('high-score', getBombEscaped());
     localStorage.setItem('highest-level', level);
 }
-//Enemy starts attacking
+// Enemy starts attacking
 function startAttacking() {
     let attackRate = Math.ceil(Math.random() * 500);
 
+    // attack user based on difficulty level
     for (let i = 0; i < changeDifficultyLevel(); i++) {
         setTimeout(enemyFireBombs, attackRate);
         clearEnemy();
@@ -367,7 +367,7 @@ function clearEnemy() {
         enemies[i].remove();
     }
 
-    // remove out od screen arrows
+    // remove out of screen arrows
     removeArrows();
 }
 
