@@ -161,6 +161,7 @@ function updateLocalStorage() {
     localStorage.setItem('high-score', getBombEscaped());
     localStorage.setItem('highest-level', level);
 }
+
 // Enemy starts attacking
 function startAttacking() {
     let attackRate = Math.ceil(Math.random() * 500);
@@ -200,7 +201,7 @@ function enemyFireBombs() {
         let randomExplosion = Math.ceil((randomInteger((70 * window.innerHeight) / 100, (100 * window.innerHeight) / 100)));
 
         // This determines the speed movement of bombs
-        let rate = [20, 40, 60, 80, 100, 150, 200, 300];
+        let rate = [1, 3, 5, 10];
         // generate random number between 1 - 3 to determine the direction of bomb
         let direction = randomInteger(1, 3);
 
@@ -230,7 +231,7 @@ function enemyFireBombs() {
             }
 
             // moving the bomb through the screen
-            let newTop = positionTop + 10;
+            let newTop = positionTop + 1;
             let element = document.elementFromPoint(bomb.offsetLeft, newTop);
 
             // checking in the element contain the bomb to change the direction
@@ -239,16 +240,16 @@ function enemyFireBombs() {
                 // if 2 - diagonal right
                 // if 3 - diagonal left
                 if (direction === 1) {
-                    bomb.style.top = positionTop + 10 + 'px';
+                    bomb.style.top = positionTop + 1 + 'px';
                 } else if (direction === 2) {
                     // changing the bomb direction move right and direction to 45 deg
-                    bomb.style.top = positionTop + 10 + 'px';
-                    bomb.style.left = positionLeft + 10 + 'px';
+                    bomb.style.top = positionTop + 1 + 'px';
+                    bomb.style.left = positionLeft + 1 + 'px';
                     bomb.style.transform = 'rotate(45deg)';
                 } else {
                     // changing the bomb direction to move left and direction to 135 deg
-                    bomb.style.top = positionTop + 10 + 'px';
-                    bomb.style.left = positionLeft - 10 + 'px';
+                    bomb.style.top = positionTop + 1 + 'px';
+                    bomb.style.left = positionLeft - 1 + 'px';
                     bomb.style.transform = 'rotate(135deg)';
                 }
             }
@@ -256,11 +257,11 @@ function enemyFireBombs() {
             // checking if the element is not null:
             // There were error when element is null or empty
             if (element !== null) {
-                // checking for arrow contact with the user
+                // checking for bomb contact with the character
                 if (element.classList.contains('user')) {
                     // stop the bomb movement and add explosion
                     bomb.style.top = positionTop + 0 + 'px';
-                    bomb.classList = 'explosion';
+                    bomb.className = 'explosion';
                     // removes live and explosions/bombs on the screen
                     removeLives();
                     removeBombs();
@@ -270,12 +271,12 @@ function enemyFireBombs() {
                 if (positionTop >= randomExplosion) {
                     // stop the bomb movement, add explosion and set the direction back to default for proper explosion
                     bomb.style.top = positionTop + 0 + 'px';
-                    bomb.classList = 'explosion';
+                    bomb.className = 'explosion';
                     bomb.style.transform = '';
                     removeBombs();
                 }
             }
-        }, rate[randomInteger(0, 7)])
+        }, rate[randomInteger(0, 3)])
     }
 }
 
@@ -341,6 +342,7 @@ function removeLives() {
         // if user has live, change character CSS and remove life.
         totalBombs--;
         document.getElementById('player').className = 'character hit left';
+        lives[0].remove();
     } else {
         // if a user doesn't have live, change character to dead
         document.getElementById('player').className = 'character dead';
@@ -353,8 +355,8 @@ function removeLives() {
         document.getElementsByClassName('game-over')[0].style.display = '';
         document.getElementsByClassName('play-again')[0].style.display = '';
         document.getElementsByClassName('end-game')[0].style.display = '';
+        lives[0].remove();
     }
-    lives[0].remove();
 }
 
 /**
