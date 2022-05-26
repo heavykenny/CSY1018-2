@@ -8,8 +8,8 @@ let lastPressed = false;
 let startGame, startGameAgain, endGame, body, startInterval1, startInterval2, startInterval3;
 let isGamePlaying, isPlayerDead = false;
 let totalBombs = 0;
-let multiplier = 20;
-let level = 1;
+let multiplier = 15;
+let level = 2;
 
 function keyup(event) {
     let player = document.getElementById('player');
@@ -73,7 +73,6 @@ function move() {
             player.style.left = newLeft + 'px';
         }
 
-
         player.className = 'character walk left';
     }
     if (rightPressed) {
@@ -125,9 +124,9 @@ function start() {
         // display the screen score
         document.getElementsByClassName('username')[0].style.display = '';
 
-        // immediately start the attack and set interval to 5 secs
+        // immediately start the attack and set interval to 3 secs
         startAttacking();
-        startInterval1 = setInterval(startAttacking, 5000);
+        startInterval1 = setInterval(startAttacking, 3000);
     }
 }
 
@@ -146,9 +145,13 @@ function changeDifficultyLevel() {
     if (getBombEscaped() >= multiplier) {
         if (isGamePlaying) {
             // This increment the game level each time the user escape 20 bombs
-            multiplier += 20;
+            multiplier += 15;
             level++;
         }
+    }
+
+    if (level > 10) {
+        level = 10;
     }
 
     return level;
@@ -164,11 +167,9 @@ function updateLocalStorage() {
 
 // Enemy starts attacking
 function startAttacking() {
-    let attackRate = Math.ceil(Math.random() * 500);
-
     // attack user based on difficulty level
     for (let i = 0; i < changeDifficultyLevel(); i++) {
-        setTimeout(enemyFireBombs, attackRate);
+        setTimeout(enemyFireBombs, 1000);
         clearEnemy();
     }
 }
@@ -200,10 +201,11 @@ function enemyFireBombs() {
          */
         let randomExplosion = Math.ceil((randomInteger((70 * window.innerHeight) / 100, (100 * window.innerHeight) / 100)));
 
-        // This determines the speed movement of bombs
-        let rate = [1, 3, 5, 10];
         // generate random number between 1 - 3 to determine the direction of bomb
         let direction = randomInteger(1, 3);
+        // controls the bomb when they to bounce back when they hit the wall
+        let left = false;
+        let right = true;
 
         // set interval for random bomb spend
         startInterval2 = setInterval(function () {
@@ -241,16 +243,36 @@ function enemyFireBombs() {
                 // if 3 - diagonal left
                 if (direction === 1) {
                     bomb.style.top = positionTop + 1 + 'px';
-                } else if (direction === 2) {
-                    // changing the bomb direction move right and direction to 45 deg
-                    bomb.style.top = positionTop + 1 + 'px';
-                    bomb.style.left = positionLeft + 1 + 'px';
-                    bomb.style.transform = 'rotate(45deg)';
                 } else {
-                    // changing the bomb direction to move left and direction to 135 deg
-                    bomb.style.top = positionTop + 1 + 'px';
-                    bomb.style.left = positionLeft - 1 + 'px';
-                    bomb.style.transform = 'rotate(135deg)';
+                    if (direction === 2) {
+                        bomb.style.top = positionTop + 1 + 'px';
+                    } else {
+                        bomb.style.top = positionTop + 1 + 'px';
+                    }
+
+                    if (right) {
+                        positionLeft++;
+                        bomb.style.left = positionLeft + "px";
+                        // changing the bomb direction move right and direction to 45 deg
+                        bomb.style.transform = 'rotate(45deg)';
+                    }
+
+                    if (left) {
+                        positionLeft--;
+                        bomb.style.left = positionLeft + "px";
+                        // changing the bomb direction move right and direction to 135 deg
+                        bomb.style.transform = 'rotate(135deg)';
+                    }
+
+                    if (window.innerWidth - 28 === positionLeft) {
+                        left = true;
+                        right = false;
+                    }
+
+                    if (positionLeft === 0) {
+                        left = false;
+                        right = true;
+                    }
                 }
             }
 
@@ -276,7 +298,7 @@ function enemyFireBombs() {
                     removeBombs();
                 }
             }
-        }, rate[randomInteger(0, 3)])
+        }, randomInteger(1, 10))
     }
 }
 
@@ -382,8 +404,8 @@ function resetValues() {
     totalBombs = 0;
     isPlayerDead = false;
     isGamePlaying = true;
-    multiplier = 20;
-    level = 1;
+    multiplier = 15;
+    level = 2;
 
     // clear all intervals : Reference https://developer.mozilla.org/en-US/docs/Web/API/clearInterval
     clearInterval(startInterval1);
