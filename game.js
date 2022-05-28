@@ -121,6 +121,8 @@ function resetValues() {
   multiplier = 15;
   level = 2;
 
+  removeBombs();
+
   // clear all intervals : Reference https://developer.mozilla.org/en-US/docs/Web/API/clearInterval
   clearInterval(startInterval1);
   clearInterval(startInterval2);
