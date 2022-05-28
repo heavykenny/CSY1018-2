@@ -207,6 +207,11 @@ function enemyFireBombs() {
         let left = false;
         let right = true;
 
+        if (direction === 3){
+            left = true;
+            right = false;
+        }
+
         // set interval for random bomb spend
         startInterval2 = setInterval(function () {
             // update the user screen with the level and bomb count
@@ -221,8 +226,8 @@ function enemyFireBombs() {
 
             // loop to get the collision with the bomb
             for (let i = 0; i < arrows.length; i++) {
-                // get the range of the position of the bomb +/- 15 for wider coverage
-                let array = range(arrows[i].offsetLeft - 15, arrows[i].offsetLeft + 15);
+                // get the rangeNumbers of the position of the bomb +/- 15 for wider coverage
+                let array = rangeNumbers(arrows[i].offsetLeft - 15, arrows[i].offsetLeft + 15);
 
                 // checking if the left position of the bomb is reach and the height ti get the contact
                 if (array.includes(positionLeft) && arrows[i].offsetTop <= positionTop) {
@@ -244,11 +249,7 @@ function enemyFireBombs() {
                 if (direction === 1) {
                     bomb.style.top = positionTop + 1 + 'px';
                 } else {
-                    if (direction === 2) {
                         bomb.style.top = positionTop + 1 + 'px';
-                    } else {
-                        bomb.style.top = positionTop + 1 + 'px';
-                    }
 
                     if (right) {
                         positionLeft++;
@@ -269,7 +270,7 @@ function enemyFireBombs() {
                         right = false;
                     }
 
-                    if (positionLeft === 0) {
+                    if (positionLeft <= 0) {
                         left = false;
                         right = true;
                     }
@@ -304,12 +305,12 @@ function enemyFireBombs() {
 
 /**
  * Reference https://stackoverflow.com/questions/8069315/create-array-of-all-integers-between-two-numbers-inclusive-in-javascript-jquer
- * This function generate range of numbers.
+ * This function generate rangeNumbers of numbers.
  * @param lowEnd
  * @param highEnd
  * @returns {*[]}
  */
-function range(lowEnd, highEnd) {
+function rangeNumbers(lowEnd, highEnd) {
     let rangeArray = [];
     for (let i = lowEnd; i <= highEnd; i++) {
         rangeArray.push(i);
@@ -468,7 +469,7 @@ function addLives(live = 3) {
  */
 // Reference: https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript
 function randomInteger(min, max) {
-    return (Math.floor(Math.random() * (max - min)) + min);
+    return (Math.ceil(Math.random() * (max - min)) + min);
 }
 
 /**
