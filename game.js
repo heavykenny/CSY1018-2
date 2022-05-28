@@ -267,11 +267,6 @@ function rangeNumbers(lowEnd, highEnd) {
 function removeBombs() {
   // setTimeout to 1 sec
   setTimeout(() => {
-    const explosions = document.getElementsByClassName('explosion');
-    for (let i = 0; i < explosions.length; i++) {
-      explosions[i].remove();
-    }
-
     // only remove the bomb when player is dead
     if (isPlayerDead) {
       const bombs = document.getElementsByClassName('bomb');
@@ -310,6 +305,7 @@ function removeLives() {
     document.getElementById('player').className = 'character dead';
 
     resetValues();
+    removeBombs();
 
     isGamePlaying = false;
     isPlayerDead = true;
@@ -511,9 +507,14 @@ function enemyFireBombs() {
           // stop the bomb movement and add explosion
           bomb.style.top = `${positionTop + 0}px`;
           bomb.className = 'explosion';
+          bomb.style.transform = '';
+
           // removes live and explosions/bombs on the screen
           removeLives();
-          removeBombs();
+
+          setTimeout(() => {
+            bomb.remove();
+          }, 1000);
         }
 
         // checking if the bomb is in the green part position and explode randomly
@@ -523,7 +524,10 @@ function enemyFireBombs() {
           bomb.style.top = `${positionTop + 0}px`;
           bomb.className = 'explosion';
           bomb.style.transform = '';
-          removeBombs();
+
+          setTimeout(() => {
+            bomb.remove();
+          }, 1000);
         }
       }
     }, randomInteger(1, 10));

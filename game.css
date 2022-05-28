@@ -17548,8 +17548,10 @@ ul {
 .username p {
     background-color: white;
     font-size: 15px;
-    color: red;
+    color: #6b0101;
     display: block;
+    padding: 10px;
+    font-weight: bold;
 }
 
 /*making the character have a wider reach for the bomb*/
