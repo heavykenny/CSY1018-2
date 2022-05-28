@@ -1,0 +1,27 @@
+{
+  "name": "game-ass",
+  "version": "1.0.0",
+  "description": "Base Source Code provided by lecturer for walking the character around and preventing movement out of the screen, other functionalities added by Kehinde Olawuwo",
+  "main": "game.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heavykenny/CSY1018-2.git"
+  },
+  "author": "Kehinde olawuwo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/heavykenny/CSY1018-2/issues"
+  },
+  "homepage": "https://github.com/heavykenny/CSY1018-2#readme"
+}
